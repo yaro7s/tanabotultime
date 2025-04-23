@@ -3,18 +3,18 @@ from discord.ext import commands
 from discord.ui import Button, View
 import asyncio
 
-# Paramètres
-TOKEN = "TON_TOKEN"  # Remplace par ton token
+
+TOKEN = "TON_TOKEN"  
 ROLE_TANA_MEC = 1363940558401310901
 ROLE_TANA_MEUF = 1363940639846306174
-AUTO_ROLE_ID = 1232345744716075161  # ID du rôle auto attribué
-WELCOME_CHANNEL_ID = 1363925565731766585  # ID du salon de bienvenue
+AUTO_ROLE_ID = 1232345744716075161 
+WELCOME_CHANNEL_ID = 1363925565731766585  
 
-# Intents
+
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-# ========= COMMANDE !ticket =========
+
 @bot.command()
 async def ticket(ctx):
     embed = discord.Embed(
@@ -34,7 +34,7 @@ async def ticket(ctx):
 
     await ctx.send(embed=embed, view=view)
 
-# ========= COMMANDE !roleselection =========
+
 @bot.command(name="roleselection")
 async def send_role_selection(ctx):
     embed = discord.Embed(
@@ -64,7 +64,7 @@ async def send_role_selection(ctx):
 
     await ctx.send(embed=embed, view=RoleButtons())
 
-# ========= GESTION DES BOUTONS =========
+
 @bot.event
 async def on_interaction(interaction):
     if interaction.type == discord.InteractionType.component:
@@ -100,10 +100,10 @@ async def on_interaction(interaction):
             await channel.delete()
             await interaction.response.send_message("Le ticket a été fermé.", ephemeral=True)
 
-# ========= AUTO ROLE =========
+
 @bot.event
 async def on_member_join(member):
-    # Ajout du rôle automatiquement à l'arrivée d'un membre
+   
     role = discord.utils.get(member.guild.roles, id=AUTO_ROLE_ID)
     if role:
         await member.add_roles(role)
@@ -111,15 +111,15 @@ async def on_member_join(member):
     else:
         print("Rôle introuvable.")
 
-    # Message de bienvenue dans le salon de bienvenue
+   
     welcome_channel = bot.get_channel(WELCOME_CHANNEL_ID)
     if welcome_channel:
         await welcome_channel.send(f"🎉 Bienvenue {member.mention} sur le serveur !")
 
-# ========= Ready =========
+
 @bot.event
 async def on_ready():
     print(f"✅ Bot connecté en tant que {bot.user}")
 
-# ========= Lancement =========
+
 bot.run(TOKEN)
